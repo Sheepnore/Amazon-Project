@@ -58,7 +58,7 @@ document.querySelector('.js-products-grid').innerHTML = productHTML;
 document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the objects and make them into a list of objects.
 .forEach((button)=>{ // loop thru the list of objects
   button.addEventListener('click',()=>{
-    const productId = button.dataset.productId; // data-product-name -> productName 自動轉換
+    const {productId} = button.dataset; // data-product-name -> productName 自動轉換
   
     let matchingItem;
     cart.forEach((item)=>{
@@ -68,15 +68,15 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
     });
 
     const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-    const selectedNumber = Number(quantitySelector.value);
+    const quantity = Number(quantitySelector.value);
 
     if (matchingItem){ // if we find the item in cart, it's a object which is truthy value      
-      matchingItem.quantity +=selectedNumber;
+      matchingItem.quantity +=quantity;
     }
     else{
       cart.push({
-        productId: productId,
-        quantity: selectedNumber,
+        productId
+        quantity
       });  
     };
     
