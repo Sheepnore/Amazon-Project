@@ -656,5 +656,14 @@ const products = [
       "apparel",
       "mens"
     ]
+  },{
+    id: "id1",
+    image: "images/products/backpack.jpg",
+    name: "NewBalance Light Backpack",
+    rating: {
+      stars: 4.4,
+      count: 220,
+    },
+    priceCents: 2300,
   }
 ];
