@@ -46,7 +46,7 @@ products.forEach((product)=>{
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${product.name}">
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-Id="${product.id}">
         Add to Cart
       </button>
     </div>`;
@@ -58,10 +58,25 @@ document.querySelector('.js-products-grid').innerHTML = productHTML;
 document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the objects and make them into a list of objects.
 .forEach((button)=>{ // loop thru the list of objects
   button.addEventListener('click',()=>{
-    const productName = button.dataset.productName; // data-product-name -> productName 自動轉換
-    cart.push({
-      productName: productName,
-      quantity: 1,
+    const productId = button.dataset.productId; // data-product-name -> productName 自動轉換
+  
+    let matchingItem;
+    cart.forEach((item)=>{
+      if (productId === item.productId){
+        matchingItem = item;
+      }
     });
+
+    if (matchingItem){ // if we find the item in cart, it's a object which is truthy value      
+      matchingItem.quantity +=1;
+    }
+    else{
+      cart.push({
+        productId: productId,
+        quantity: 1,
+      });  
+    }
+    
+        
   console.log(cart);
   })})
