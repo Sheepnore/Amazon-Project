@@ -46,13 +46,22 @@ products.forEach((product)=>{
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary">
+      <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${product.name}">
         Add to Cart
       </button>
     </div>`;
 
 });
 
-console.log(productHTML);
-
 document.querySelector('.js-products-grid').innerHTML = productHTML;
+
+document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the objects and make them into a list of objects.
+.forEach((button)=>{ // loop thru the list of objects
+  button.addEventListener('click',()=>{
+    const productName = button.dataset.productName; // data-product-name -> productName 自動轉換
+    cart.push({
+      productName: productName,
+      quantity: 1,
+    });
+  console.log(cart);
+  })})
