@@ -75,8 +75,14 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
         productId: productId,
         quantity: 1,
       });  
-    }
+    };
     
-        
-  console.log(cart);
-  })})
+    let cartQuantity=0; // It has to be assign a number first to be calculated by JS, otherwise it would be NAN
+    cart.forEach((item)=>{
+      cartQuantity += item.quantity;
+    });
+
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+  
+  });
+});
