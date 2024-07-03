@@ -661,7 +661,7 @@ export const products = [
     image: "images/products/backpack.jpg",
     name: "NewBalance Light Backpack",
     rating: {
-      stars: 4.4,
+      stars: 4.5,
       count: 220,
     },
     priceCents: 2300,
