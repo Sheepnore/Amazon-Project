@@ -64,6 +64,7 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
     const {productId} = button.dataset; // data-product-name -> productName 自動轉換
   
     let matchingItem;
+
     cart.forEach((item)=>{
       if (productId === item.productId){
         matchingItem = item;
@@ -78,8 +79,8 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
     }
     else{
       cart.push({
-        productId
-        quantity
+        productId,
+        quantity,
       });  
     };
     
@@ -89,9 +90,7 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
     });
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-  
-    
-    
+
 
   });
 });
