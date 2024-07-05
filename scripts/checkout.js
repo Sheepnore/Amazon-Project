@@ -1,11 +1,11 @@
-import {cart} from "../data/cart.js";
+import {cart, removeFromCart} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 let cartProductHTML ='';
-cart.forEach((cartItem)=>{
+cart.forEach((cartItem)=>{ 
   const productId = cartItem.productId;
   let matchingProduct;
-  products.forEach((product)=>{
+  products.forEach((product)=>{ // 
     if (product.id === productId){
       matchingProduct = product;
     }
@@ -33,7 +33,7 @@ cart.forEach((cartItem)=>{
           <span class="update-quantity-link link-primary">
             Update
           </span>
-          <span class="delete-quantity-link link-primary">
+          <span class="delete-quantity-link link-primary js-delete-link" data-linked-productid="${matchingProduct.id}">
             Delete
           </span>
         </div>
@@ -88,5 +88,17 @@ cart.forEach((cartItem)=>{
 
 });
 document.querySelector('.js-order-summary').innerHTML = cartProductHTML;
+
+document.querySelectorAll('.js-delete-link') // 刪除購物車項目 
+.forEach((link)=>{
+  link.addEventListener('click',()=>{
+    const linkedProductid = link.dataset.linkedProductid;
+    console.log(linkedProductid);
+    //const newCart = cart.filter(deletedProduct => deletedProduct.productId!==linkedProductid);
+    //cart = newCart
+    removeFromCart(linkedProductid);
+    console.log(cart);
+  })
+})
 
 
