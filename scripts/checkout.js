@@ -12,11 +12,11 @@ cart.forEach((cartItem)=>{
 
   })
    cartProductHTML += `
-  <div class="cart-item-container">
+  <div class="cart-item-container js-container-${matchingProduct.id}">
     <div class="delivery-date">
       Delivery date: Tuesday, June 21
     </div>
-    <div class="cart-item-details-grid">
+    <div class="cart-item-details-grid js-cart-item-container-${matchingProduct.id}">
       <img class="product-image"
         src="${matchingProduct.image}">
       <div class="cart-item-details">
@@ -92,12 +92,13 @@ document.querySelector('.js-order-summary').innerHTML = cartProductHTML;
 document.querySelectorAll('.js-delete-link') // 刪除購物車項目 
 .forEach((link)=>{
   link.addEventListener('click',()=>{
-    const linkedProductid = link.dataset.linkedProductid;
-    console.log(linkedProductid);
-    //const newCart = cart.filter(deletedProduct => deletedProduct.productId!==linkedProductid);
-    //cart = newCart
-    removeFromCart(linkedProductid);
-    console.log(cart);
+    const productId = link.dataset.linkedProductid;
+    console.log(productId);
+    removeFromCart(productId);
+
+    const html = document.querySelector(`.js-container-${productId}`);
+    html.remove();
+    
   })
 })
 
