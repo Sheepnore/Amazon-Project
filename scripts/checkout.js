@@ -97,7 +97,7 @@ document.querySelectorAll('.js-delete-link') // 刪除購物車項目
     removeFromCart(productId);
 
     const html = document.querySelector(`.js-container-${productId}`);
-    html.remove();
+    html.remove(); 
     
   })
 })

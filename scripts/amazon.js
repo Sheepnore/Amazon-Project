@@ -72,7 +72,7 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
 .forEach((button)=>{ // loop thru the list of objects
   button.addEventListener('click',()=>{
     const productId = button.dataset.productId; // button element 的 data attribute抓下來並儲存成一個變數為`productId`; data-product-id -> productId 自動轉換
-    addToCart(productId);
+    addToCart(productId); 
     updateCartQuantity();
 
 
