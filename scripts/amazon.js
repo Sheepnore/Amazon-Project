@@ -67,6 +67,7 @@ function updateCartQuantity(){
     });
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
+updateCartQuantity();
 
 document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the objects and make them into a list of objects.
 .forEach((button)=>{ // loop thru the list of objects
@@ -74,8 +75,6 @@ document.querySelectorAll('.js-add-to-cart') // * querySelectorAll find the obje
     const productId = button.dataset.productId; // button element 的 data attribute抓下來並儲存成一個變數為`productId`; data-product-id -> productId 自動轉換
     addToCart(productId); 
     updateCartQuantity();
-
-
   });
 });
 
