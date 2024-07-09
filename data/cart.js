@@ -36,7 +36,6 @@ export function addToCart(productId){
     });  
   };
   saveToStorage();
-
 }
 
 export function removeFromCart(productId){
@@ -68,4 +67,18 @@ export function updateQuantity(productId, newQuantity){
       item.quantity = newQuantity;
     }
   })
+}
+
+// When update the deliveryOption, we need to know 1. product we want to update and 2. delivery option that we chose
+// Steps: 1. Loop thru cart and find product 2. Update the deliveryOptionId of the product
+export function updateDeliveryOption(productId, deliveryOptionId){ 
+
+  let matchingItem;
+  cart.forEach((cartItem)=>{
+    if (productId === cartItem.productId){
+      matchingItem = cartItem;
+    }
+  });
+  matchingItem.deliveryOptionId = deliveryOptionId;
+  saveToStorage();
 }

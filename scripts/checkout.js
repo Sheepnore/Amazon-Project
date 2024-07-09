@@ -1,4 +1,4 @@
-import {cart, removeFromCart, calculateCartQuantity} from "../data/cart.js";
+import {cart, removeFromCart, calculateCartQuantity, updateDeliveryOption} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -37,7 +37,7 @@ cart.forEach((cartItem)=>{
    cartProductHTML += `
   <div class="cart-item-container js-container-${matchingProduct.id}">
     <div class="delivery-date">
-      Delivery date: Tuesday, June 21
+      Delivery date: ${dateString};
     </div>
     <div class="cart-item-details-grid js-cart-item-container-${matchingProduct.id}">
       <img class="product-image"
@@ -75,9 +75,8 @@ cart.forEach((cartItem)=>{
 
 });
 
-
-
-function deliveryOptionHTML(matchingProduct,cartItem){
+// Generate HTML for delivery options
+function deliveryOptionHTML(matchingProduct,cartItem){ 
   let html = ''
   deliveryOptions.forEach((deliveryOption)=>{
     const today = dayjs();
@@ -88,12 +87,14 @@ function deliveryOptionHTML(matchingProduct,cartItem){
     const dateString = deliveryDate.format(
       'dddd, MMMM D'
     );
-    const priceString = deliveryOption.priceCents ===0 ? 'Free':`$${formatCurrency(deliveryOption.priceCents)} -`; 
+    const priceString = deliveryOption.priceCents ===0 ? 'Free':`$${formatCurrency(deliveryOption.priceCents)} -`; // price == 0 return 'Free' otherwise return the price 
 
-    const isChecked = deliveryOption.id === cartItem.deliveryOptionId; // return true if deliveryOption.id is === cartItem.deliveryOptionId, otherwise return false
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
     html += `
-      <div class="delivery-option">
+      <div class="delivery-option js-delivery-option"
+      data-product-id="${matchingProduct.id}"
+      data-delivery-option-id="${deliveryOption.id}">
         <input type="radio" 
         ${isChecked ? 'checked': ''}
           class="delivery-option-input"
@@ -111,6 +112,7 @@ function deliveryOptionHTML(matchingProduct,cartItem){
   })
   return html;
 }
+
 
 document.querySelector('.js-order-summary').innerHTML = cartProductHTML;
 
@@ -154,5 +156,15 @@ document.querySelectorAll('.js-save-link')
 
     const input = document.querySelector('quantity-input');
     inputQuan = Number(input.value);
+  })
+})
+
+// When click, update the deliveryOptionId in cart, and update the page
+document.querySelectorAll('.js-delivery-option')
+.forEach((element)=>{
+  element.addEventListener('click',()=>{
+    const {productId, deliveryOptionId} = element.dataset;
+
+    updateDeliveryOption(productId,deliveryOptionId);
   })
 })
