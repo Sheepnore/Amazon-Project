@@ -44,12 +44,12 @@ export function renderOrderSummary(){
           </div>
           <div class="product-quantity">
             <span>
-              Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+              Quantity: <span class="quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
             </span>
             <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
               Update
             </span>
-            <input class="quantity-input">
+            <input class="quantity-input-${productId}">
             <span class="save-quantity-link link-primary js-save-link" data-product-id = "${matchingProduct.id}">Save</span>
             <span class="delete-quantity-link link-primary js-delete-link" data-linked-productid="${matchingProduct.id}">
               Delete
@@ -115,14 +115,10 @@ export function renderOrderSummary(){
   .forEach((link)=>{
     link.addEventListener('click',()=>{
       const productId = link.dataset.linkedProductid;
-      console.log(productId);
       removeFromCart(productId);
 
-      const html = document.querySelector(`.js-container-${productId}`);
-      html.remove(); 
-      
+      renderOrderSummary();
       calculateCartQuantity();
-
       renderPaymentSummary();
     });
   });
@@ -146,16 +142,33 @@ export function renderOrderSummary(){
   document.querySelectorAll('.js-save-link')
   .forEach((saveLink)=>{
     saveLink.addEventListener('click',()=>{
+
+      let matchingProduct={};
+
       const productId = saveLink.dataset.productId;
 
       const containerElement = document.querySelector(`.js-container-${productId}`);
+
+      const inputElement = document.querySelector(`.quantity-input-${productId}`);
+      const inputQuantity = Number(inputElement.value);
+      console.log(inputQuantity);
+
+      cart.forEach((item)=>{
+        if (item.id === productId){
+          matchingProduct = item;
+        }
+      });
+
+      matchingProduct.quantity = inputQuantity;
+
+      const quantityText = document.querySelector(`.quantity-label-${productId}`);
+      quantityText.innerHTML = matchingProduct.quantity;
+
       containerElement.classList.remove('is-editing-quantity');
 
-      const input = document.querySelector('quantity-input');
-      inputQuan = Number(input.value);
       renderPaymentSummary();
-    })
-  })
+    });
+  });
 
   // When select the delivery option, update the deliveryOptionId in cart, and update the page 
   document.querySelectorAll('.js-delivery-option')

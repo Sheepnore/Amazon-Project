@@ -124,20 +124,20 @@
   display: none;
 }
 
-.is-editing-quantity .quantity-label {
-  display: none;
+.is-editing-quantity .quantity-input {
+  display: inline-block;
 }
 
 .save-quantity-link {
-  display:none
+  display:none;
 }
 
-.is-editing-quantity .quantity-input{
-  display: initial;
+.is-editing-quantity .quantity-label{
+  display: none;
 }
 
 .is-editing-quantity .save-quantity-link {
-  display: initial;
+  display: inline;
 }
 
 .is-editing-quantity .update-quantity-link {
