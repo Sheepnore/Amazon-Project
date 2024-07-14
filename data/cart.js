@@ -1,4 +1,3 @@
-
 export let cart = JSON.parse(localStorage.getItem('cart'));
 
 if (!cart){
@@ -49,7 +48,7 @@ export function removeFromCart(productId){
   saveToStorage();
 };
 
-function saveToStorage(){
+export function saveToStorage(){
   localStorage.setItem('cart', JSON.stringify(cart)) // save cart item into localStorage in string 
 };
 

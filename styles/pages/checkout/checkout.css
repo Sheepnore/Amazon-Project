@@ -115,6 +115,10 @@
   margin-bottom: 5px;
 }
 
+  /* 
+    Input Element xx
+  */
+  
 .product-quantity .link-primary {
   margin-left: 3px;
 }
@@ -143,6 +147,8 @@
 .is-editing-quantity .update-quantity-link {
   display: none;
 }
+
+/*Input Element ^^ */
 
 @media (max-width: 1000px) {
   .delivery-options {

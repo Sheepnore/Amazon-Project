@@ -1,4 +1,4 @@
-import {cart, removeFromCart, calculateCartQuantity, updateDeliveryOption} from "../../data/cart.js";
+import {cart, removeFromCart, calculateCartQuantity, updateDeliveryOption,saveToStorage} from "../../data/cart.js";
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -44,12 +44,12 @@ export function renderOrderSummary(){
           </div>
           <div class="product-quantity">
             <span>
-              Quantity: <span class="quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
+              Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
             </span>
             <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
               Update
             </span>
-            <input class="quantity-input-${productId}">
+            <input class="quantity-input js-quantity-input-${matchingProduct.id}">
             <span class="save-quantity-link link-primary js-save-link" data-product-id = "${matchingProduct.id}">Save</span>
             <span class="delete-quantity-link link-primary js-delete-link" data-linked-productid="${matchingProduct.id}">
               Delete
@@ -143,33 +143,53 @@ export function renderOrderSummary(){
   .forEach((saveLink)=>{
     saveLink.addEventListener('click',()=>{
 
-      let matchingProduct={};
+      //let cart = JSON.parse(localStorage.getItem('cart'));
 
       const productId = saveLink.dataset.productId;
 
       const containerElement = document.querySelector(`.js-container-${productId}`);
 
-      const inputElement = document.querySelector(`.quantity-input-${productId}`);
+      const inputElement = document.querySelector(`.js-quantity-input-${productId}`);
+
       const inputQuantity = Number(inputElement.value);
-      console.log(inputQuantity);
+
+      let matchingProduct={};
 
       cart.forEach((item)=>{
-        if (item.id === productId){
+        if (item.productId === productId){
           matchingProduct = item;
         }
-      });
+      })      
 
       matchingProduct.quantity = inputQuantity;
 
-      const quantityText = document.querySelector(`.quantity-label-${productId}`);
-      quantityText.innerHTML = matchingProduct.quantity;
+      cart.forEach((item)=>{
+        if (item.id === productId){
+          item = matchingProduct;
+        }
+      })
+
+      const quantityText = document.querySelector(`.js-quantity-label-${productId}`);
+
+      quantityText.innerHTML = inputQuantity;
 
       containerElement.classList.remove('is-editing-quantity');
+
+      console.log(cart);
+
+
+      calculateCartQuantity();
+
+      saveToStorage();
+  
 
       renderPaymentSummary();
     });
   });
 
+
+  console.log(cart);
+ 
   // When select the delivery option, update the deliveryOptionId in cart, and update the page 
   document.querySelectorAll('.js-delivery-option')
   .forEach((element)=>{
