@@ -57,7 +57,7 @@ export function calculateCartQuantity(){
       cart.forEach((cartItem)=>{
         quantity += cartItem.quantity;
       });
-      document.querySelector('.js-checkout-quantity').innerHTML = `Checkout (${quantity} items)`;
+
   };
 
 export function updateQuantity(productId, newQuantity){

@@ -1,9 +1,9 @@
-import {cart, removeFromCart, calculateCartQuantity, updateDeliveryOption,saveToStorage} from "../../data/cart.js";
+import {cart, removeFromCart, updateDeliveryOption,saveToStorage} from "../../data/cart.js";
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOption.js';
+import {calculateDeliveryDate, deliveryOptions, getDeliveryOption} from '../../data/deliveryOption.js';
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummary(){
   let cartProductHTML ='';
@@ -17,20 +17,12 @@ export function renderOrderSummary(){
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-
-    const deliveryDate = today.add(
-      deliveryOption.deliveryDays,
-      'days'
-    );
-    const dateString = deliveryDate.format(
-      'dddd, MMMM D'
-    );
+    calculateDeliveryDate(deliveryOption);
 
     cartProductHTML += `
     <div class="cart-item-container js-container-${matchingProduct.id}">
       <div class="delivery-date">
-        Delivery date: ${dateString};
+        Delivery date: ${calculateDeliveryDate(deliveryOption)};
       </div>
       <div class="cart-item-details-grid js-cart-item-container-${matchingProduct.id}">
         <img class="product-image"
@@ -74,14 +66,7 @@ export function renderOrderSummary(){
     let html = ''
     
     deliveryOptions.forEach((deliveryOption)=>{
-      const today = dayjs();
-      const deliveryDate = today.add(
-        deliveryOption.deliveryDays,
-        'days'
-      );
-      const dateString = deliveryDate.format(
-        'dddd, MMMM D'
-      );
+      
       const priceString = deliveryOption.priceCents ===0 ? 'Free':`$${formatCurrency(deliveryOption.priceCents)} -`; // price == 0 return 'Free' otherwise return the price 
 
       const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
@@ -96,7 +81,7 @@ export function renderOrderSummary(){
             name="delivery-option-${matchingProduct.id}">
           <div>
             <div class="delivery-option-date">
-              ${dateString}
+              ${calculateDeliveryDate(deliveryOption)}
             </div>
             <div class="delivery-option-price">
               ${priceString} Shipping
@@ -118,12 +103,12 @@ export function renderOrderSummary(){
       removeFromCart(productId);
 
       renderOrderSummary();
-      calculateCartQuantity();
+      renderCheckoutHeader()    
       renderPaymentSummary();
     });
   });
 
-  calculateCartQuantity();
+  renderCheckoutHeader()
 
   document.querySelectorAll('.js-update-link')
   .forEach((updateLink)=>{
@@ -178,7 +163,7 @@ export function renderOrderSummary(){
       console.log(cart);
 
 
-      calculateCartQuantity();
+      renderCheckoutHeader()
 
       saveToStorage();
   
